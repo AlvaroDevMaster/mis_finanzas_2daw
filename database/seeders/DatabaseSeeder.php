@@ -5,6 +5,9 @@ namespace Database\Seeders;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\Category;
+use App\Models\Income;
+use App\Models\Spending;
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,11 +16,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        Category::factory()->count(5)->create();
+        Income::factory()->count(10)->create();
+        Spending::factory()->count(10)->create();
     }
 }

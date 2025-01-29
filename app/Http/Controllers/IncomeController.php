@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+
 use Illuminate\Http\Request;
+use App\Models\Income;
 
 class IncomeController extends Controller
 {
@@ -11,20 +13,14 @@ class IncomeController extends Controller
      */
     public function index()
     {
+        $data = Income::all()->toArray();
+        $headings = array_keys($data[0]);
         $tableData = [
-            'heading' => [
-                'date','category','amount'
-            ],
-            'data' => [
-                ['12/12/2012','salary','2500'],
-                ['12/01/2013','salary','2500'],
-                ['12/02/2013','salary','2550']
-            ]
-
-        ]; 
+            'heading' => $headings,
+            'data' => $data
+        ];
         //Aquí la lógica de negocio para el index
         return view('income.index',['title' => 'My incomes','tableData' => $tableData]);
-        
     }
 
     /**
