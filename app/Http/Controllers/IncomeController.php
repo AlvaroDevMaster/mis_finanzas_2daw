@@ -13,14 +13,11 @@ class IncomeController extends Controller
      */
     public function index()
     {
-        $data = Income::all()->toArray();
-        $headings = array_keys($data[0]);
-        $tableData = [
-            'heading' => $headings,
-            'data' => $data
-        ];
+        $heading = ['description' => 'ID', 'amount' => 'Amount', 'category_id' => 'Category', 'date' => 'Date'];
+        $data = Income::select(array_keys($heading))->orderBy('date', 'desc')->paginate(10);
+        
         //Aquí la lógica de negocio para el index
-        return view('income.index',['title' => 'My incomes','tableData' => $tableData]);
+        return view('income.index',['title' => 'My incomes','tableData' => compact('heading','data')]);
     }
 
     /**
