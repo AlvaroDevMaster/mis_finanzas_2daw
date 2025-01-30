@@ -12,7 +12,11 @@ class SpendingController extends Controller
      */
     public function index()
     {
-        $spending = Spending::orderBy("id","desc")->paginate(10);
+        $heading = ['description' => 'Description', 'amount' => 'Amount', 'category_id' => 'Category', 'date' => 'Date'];
+        $data = Spending::select(array_keys($heading))->orderBy('date', 'desc')->paginate(10);
+        
+        //Aquí la lógica de negocio para el index
+        return view('spending.index',['title' => 'My Spendings','tableData' => compact('heading','data')]);
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Services\MenuService;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -11,7 +12,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->singleton(MenuService::class, function ($app) {
+            return new MenuService();
+        });
     }
 
     /**
@@ -19,6 +22,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        view()->composer('*', function ($view) {
+
+            $menuService = app(MenuService::class);
+    
+            $view->with('menu', $menuService->getMenu());
+    
+        });
     }
 }

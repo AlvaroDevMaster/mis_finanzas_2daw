@@ -6,6 +6,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Income;
 
+use App\Services\MenuService;
+
 class IncomeController extends Controller
 {
     /**
@@ -13,7 +15,7 @@ class IncomeController extends Controller
      */
     public function index()
     {
-        $heading = ['description' => 'ID', 'amount' => 'Amount', 'category_id' => 'Category', 'date' => 'Date'];
+        $heading = ['description' => 'Description', 'amount' => 'Amount', 'category_id' => 'Category', 'date' => 'Date'];
         $data = Income::select(array_keys($heading))->orderBy('date', 'desc')->paginate(10);
         
         //Aquí la lógica de negocio para el index
