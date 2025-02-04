@@ -10,5 +10,5 @@ Route::get('/', function () {
 });
 
 //Route::resource('incomes', IncomeController::class);
-Route::get('/incomes', [IncomeController::class, 'index'])->name('incomes.index');
-Route::get('/spendings', [SpendingController::class, 'index'])->name('spendings.index');
+Route::get('/incomes', [IncomeController::class, 'index'])->name('incomes');
+Route::get('/spendings', [SpendingController::class, 'index'])->name('spendings');

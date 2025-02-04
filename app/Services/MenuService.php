@@ -1,5 +1,6 @@
 <?php 
 namespace App\Services;
+use Illuminate\Support\Facades\Route;
 
 class MenuService
 {
@@ -8,14 +9,18 @@ class MenuService
         return [
             [
                 "title" => "My Incomes",
-                'url' => "/incomes",
-                "active" => request()->is("/incomes")
+                "url" => route("incomes"),
+                'name' => "incomes",
             ],
             [
                 "title" => "My Spendings",
-                'url' => "/spendings",
-                "active" => request()->is("/spendings")
+                "url" => route("spendings"),
+                'name' => "spendings",
             ],
         ];
+    }
+    public function isActive($routeName): bool
+    {
+        return Route::currentRouteName() === $routeName;
     }
 }

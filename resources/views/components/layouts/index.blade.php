@@ -1226,17 +1226,15 @@
                         <div class="hidden md:block">
                             <div class="ml-10 flex items-baseline space-x-4">
 
-                                @foreach($menu as $item)
+                        @foreach($menuService->getMenu() as $item)
 
-                                    <a href="{{ $item['url'] }}"
-                                            class="rounded-md {{ $item['isActive'] ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} px-3 py-2 text-sm font-medium"
-                                            aria-current="{{ $item['isActive'] ? 'page' : '' }}">
+                            <a href="{{ $item['url'] }}" class="rounded-md {{ $menuService->isActive($item['name']) ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} px-3 py-2 text-sm font-medium" aria-current="{{ $menuService->isActive($item['name']) ? 'page' : '' }}">
 
-                                            {{ $item['title'] }}
+                                {{ $item['title'] }}
 
-                                        </a>
+                            </a>
 
-                                @endforeach
+                        @endforeach
 
                             </div>
                         </div>

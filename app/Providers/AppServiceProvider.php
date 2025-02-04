@@ -26,7 +26,7 @@ class AppServiceProvider extends ServiceProvider
 
             $menuService = app(MenuService::class);
     
-            $view->with('menu', $menuService->getMenu());
+            $view->with('menuService', $menuService);
     
         });
     }
