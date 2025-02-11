@@ -11,6 +11,7 @@ use App\Models\Category;
  */
 class SpendingFactory extends Factory
 {
+    protected $model = Spending::class;
     /**
      * Define the model's default state.
      *
@@ -20,7 +21,7 @@ class SpendingFactory extends Factory
     {
         return [
             'date' => $this->faker->date(),
-            'category_id' => Category::factory(),
+            'category_id' => Category::where('type', 'expense')->inRandomOrder()->first()->id,
             'description' => $this->faker->sentence(),
             'amount' => $this->faker->randomFloat(2, 10, 1000),
         ];

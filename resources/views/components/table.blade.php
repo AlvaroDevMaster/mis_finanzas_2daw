@@ -2,7 +2,6 @@
     <table class="w-full text-sm text-left rtl:text-right text-gray-500">
         <thead class="text-xs text-gray-700 uppercase bg-gray-50">
             <tr>
-
                 @foreach ($tableData['heading'] as $heading)
                     <th scope="col" class="px-6 py-3">
                         {{$heading}}
@@ -22,7 +21,11 @@
                             </th>
                         @else
                             <td class="px-6 py-4 text-gray-900 whitespace-nowrap">
-                                {{$data->$field}}
+                                @if($field === 'category_id')
+                                    {{$data->category->name}}
+                                @else
+                                    {{$data->$field}}
+                                @endif
                             </td>
                         @endif
                     @endforeach

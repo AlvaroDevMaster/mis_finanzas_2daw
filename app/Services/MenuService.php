@@ -9,18 +9,18 @@ class MenuService
         return [
             [
                 "title" => "My Incomes",
-                "url" => route("incomes"),
+                "url" => "/incomes",
                 'name' => "incomes",
             ],
             [
                 "title" => "My Spendings",
-                "url" => route("spendings"),
+                "url" => "/spendings",
                 'name' => "spendings",
             ],
         ];
     }
-    public function isActive($routeName): bool
+    public function isActive($route): bool
     {
-        return Route::currentRouteName() === $routeName;
+        return str_starts_with(Route::currentRouteName(), $route);
     }
 }

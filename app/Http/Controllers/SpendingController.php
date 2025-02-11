@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Spending;
 use Illuminate\Http\Request;
+use App\Models\Category;
+use Illuminate\Foundation\Validation\ValidatesRequests;
 
 class SpendingController extends Controller
 {
+    use ValidatesRequests;
     /**
      * Display a listing of the resource.
      */
@@ -24,7 +27,46 @@ class SpendingController extends Controller
      */
     public function create()
     {
-        //
+        $formInputs = [
+            [
+                'type' => 'text',
+                'name' => 'description',
+                'label' => 'Description',
+                'placeholder' => 'Enter description',
+                'required' => true,
+                'gridClass' => 'sm:col-span-2'
+            ],
+            [
+                'type' => 'select',
+                'name' => 'category_id',
+                'label' => 'Category',
+                'options' => Category::where('type', 'expense')->pluck('name', 'id')->toArray(),
+                'placeholder' => 'Select category',
+                'required' => true
+            ],
+            [
+                'type' => 'date',
+                'name' => 'date',
+                'label' => 'Date',
+                'required' => true,
+                'gridClass' => 'w-full'
+            ],
+            [
+                'type' => 'number',
+                'name' => 'amount',
+                'label' => 'Amount',
+                'placeholder' => 'Enter amount',
+                'required' => true,
+                'step' => '0.01',
+                'min' => '0',
+                'gridClass' => 'w-full'
+            ]
+        ];
+        
+        return view('spending.create', [
+            'title' => 'Add income', 'formInputs' => $formInputs,
+            'action' => route('spendings.store'), 'method' => 'POST'
+        ]);
     }
 
     /**
@@ -32,7 +74,15 @@ class SpendingController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $this->validate($request, [
+            'description' => 'required|string|max:255',
+            'category_id' => 'required|exists:categories,id',
+            'date' => 'required|date',
+            'amount' => 'required|numeric|min:0.01'
+        ]);
+        
+        $income = Spending::create($validatedData);
+        return redirect()->route('spendings.index')->with('success', 'Spending added successfully');
     }
 
     /**

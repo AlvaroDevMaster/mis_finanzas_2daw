@@ -11,6 +11,7 @@ use App\Models\Category;
  */
 class IncomeFactory extends Factory
 {
+    protected $model = Income::class;
     /**
      * Define the model's default state.
      *
@@ -20,7 +21,7 @@ class IncomeFactory extends Factory
     {
         return [
             'date' => $this->faker->date(),
-            'category_id' => Category::factory(), // Generates a new Category if not exists
+            'category_id' => Category::where('type', 'income')->inRandomOrder()->first()->id,
             'description' => $this->faker->sentence(),
             'amount' => $this->faker->randomFloat(2, 10, 1000), // Random amount between 10 and 1000
         ];
