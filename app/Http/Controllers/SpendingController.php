@@ -16,7 +16,7 @@ class SpendingController extends Controller
     public function index()
     {
         $heading = ['description' => 'Description', 'amount' => 'Amount', 'category_id' => 'Category', 'date' => 'Date'];
-        $data = Spending::select(array_keys($heading))->orderBy('date', 'desc')->paginate(10);
+        $data = Spending::select('id', 'description', 'amount', 'category_id', 'date')->orderBy('date', 'desc')->paginate(10);
         
         //Aquí la lógica de negocio para el index
         return view('spending.index',['title' => 'My Spendings','tableData' => compact('heading','data')]);
@@ -27,41 +27,7 @@ class SpendingController extends Controller
      */
     public function create()
     {
-        $formInputs = [
-            [
-                'type' => 'text',
-                'name' => 'description',
-                'label' => 'Description',
-                'placeholder' => 'Enter description',
-                'required' => true,
-                'gridClass' => 'sm:col-span-2'
-            ],
-            [
-                'type' => 'select',
-                'name' => 'category_id',
-                'label' => 'Category',
-                'options' => Category::where('type', 'expense')->pluck('name', 'id')->toArray(),
-                'placeholder' => 'Select category',
-                'required' => true
-            ],
-            [
-                'type' => 'date',
-                'name' => 'date',
-                'label' => 'Date',
-                'required' => true,
-                'gridClass' => 'w-full'
-            ],
-            [
-                'type' => 'number',
-                'name' => 'amount',
-                'label' => 'Amount',
-                'placeholder' => 'Enter amount',
-                'required' => true,
-                'step' => '0.01',
-                'min' => '0',
-                'gridClass' => 'w-full'
-            ]
-        ];
+        $formInputs = Spending::getFormInputs();
         
         return view('spending.create', [
             'title' => 'Add income', 'formInputs' => $formInputs,
@@ -98,7 +64,11 @@ class SpendingController extends Controller
      */
     public function edit(Spending $spending)
     {
-        //
+        $formInputs = Spending::getFormInputs();
+        return view('', [
+            'title' => 'Edit spending', 'formInputs' => $formInputs,
+            'action' => route('spendings.update', $spending->id), 'method' => 'PUT'
+        ]);
     }
 
     /**
@@ -106,7 +76,14 @@ class SpendingController extends Controller
      */
     public function update(Request $request, Spending $spending)
     {
-        //
+        $validatedData = $this->validate($request, [
+            'description' => 'required|string|max:255',
+            'category_id' => 'required|exists:categories,id',
+            'date' => 'required|date',
+            'amount' => 'required|numeric|min:0.01'
+        ]);
+        $income = $spending->update($validatedData, $spending->id);
+        return redirect()->route('spendings.index')->with('success','Spending updated successfully');
     }
 
     /**
@@ -114,6 +91,7 @@ class SpendingController extends Controller
      */
     public function destroy(Spending $spending)
     {
-        //
+        $spending->delete();
+        return redirect()->route('spendings.index')->with('success','Speending deleted successfully');
     }
 }

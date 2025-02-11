@@ -7,6 +7,9 @@
                         {{$heading}}
                     </th>
                 @endforeach
+                <th scope="col" class="px-6 py-3">
+                    Acciones
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -29,6 +32,16 @@
                             </td>
                         @endif
                     @endforeach
+                    <td>
+                        <div class="flex items">
+                            <a href="{{$attributes->get('actionRoute').'/'.$data->id.'/edit'}}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
+                            <form action="{{$attributes->get('actionRoute').'/'.$data->id}}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="text-red-600 hover:text-red-900">Delete</button>
+                            </form>
+                        </div>
+                    </td>
                 </tr>
             @endforeach
         </tbody>

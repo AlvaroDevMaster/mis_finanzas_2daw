@@ -29,7 +29,7 @@ class IncomeController extends Controller
         ];
         
         
-        $data = Income::select('description', 'amount', 'category_id', 'date')
+        $data = Income::select('id', 'description', 'amount', 'category_id', 'date')
         
             ->orderBy('date', 'desc')
         
@@ -52,41 +52,7 @@ class IncomeController extends Controller
      */
     public function create()
     {
-        $formInputs = [
-            [
-                'type' => 'text',
-                'name' => 'description',
-                'label' => 'Description',
-                'placeholder' => 'Enter description',
-                'required' => true,
-                'gridClass' => 'sm:col-span-2'
-            ],
-            [
-                'type' => 'select',
-                'name' => 'category_id',
-                'label' => 'Category',
-                'options' => Category::where('type', 'income')->pluck('name', 'id')->toArray(),
-                'placeholder' => 'Select category',
-                'required' => true
-            ],
-            [
-                'type' => 'date',
-                'name' => 'date',
-                'label' => 'Date',
-                'required' => true,
-                'gridClass' => 'w-full'
-            ],
-            [
-                'type' => 'number',
-                'name' => 'amount',
-                'label' => 'Amount',
-                'placeholder' => 'Enter amount',
-                'required' => true,
-                'step' => '0.01',
-                'min' => '0',
-                'gridClass' => 'w-full'
-            ]
-        ];
+        $formInputs = Income::getFormInputs();
         
         return view('income.create', [
             'title' => 'Add income', 'formInputs' => $formInputs,
@@ -124,8 +90,15 @@ class IncomeController extends Controller
      */
     public function edit(string $id)
     {
-        //
-        return '<p>Esta es la página del edit de incomes</p>';
+        $formInputs = Income::getFormInputs();
+        $income = Income::select('description', 'amount', 'category_id', 'date')
+            ->with('category')
+            ->find($id);
+        return view('income.edit', [
+            'title' => 'Edit income', 'formInputs' => $formInputs,
+            'action' => route('incomes.update', $id), 'method' => 'PUT',
+            'model' => $income
+        ]);
     }
 
     /**
@@ -133,7 +106,15 @@ class IncomeController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $validatedData = $this->validate($request, [
+            'description' => 'required|string|max:255',
+            'category_id' => 'required|exists:categories,id',
+            'date' => 'required|date',
+            'amount' => 'required|numeric|min:0.01'
+        ]);
+        $income = Income::findOrFail($id);
+        $income = $income->update($validatedData, $id);
+        return redirect()->route('incomes.index')->with('success','Income updated successfully');
         
     }
 
@@ -142,6 +123,7 @@ class IncomeController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $income = Income::destroy($id);
+        return redirect()->route('incomes.index')->with('success','Income deleted successfully');
     }
 }
