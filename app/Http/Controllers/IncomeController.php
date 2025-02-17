@@ -94,9 +94,12 @@ class IncomeController extends Controller
         $income = Income::select('description', 'amount', 'category_id', 'date')
             ->with('category')
             ->find($id);
+
         return view('income.edit', [
-            'title' => 'Edit income', 'formInputs' => $formInputs,
-            'action' => route('incomes.update', $id), 'method' => 'PUT',
+            'title' => 'Edit income', 
+            'formInputs' => $formInputs,
+            'action' => route('incomes.update', $id), 
+            'method' => 'PUT',
             'model' => $income
         ]);
     }
@@ -113,8 +116,8 @@ class IncomeController extends Controller
             'amount' => 'required|numeric|min:0.01'
         ]);
         $income = Income::findOrFail($id);
-        $income = $income->update($validatedData, $id);
-        return redirect()->route('incomes.index')->with('success','Income updated successfully');
+        $income = $income->update($validatedData, ['id' => $id]);
+        return redirect()->route('incomes.index')->with('alertType','success')->with('message','Income updated successfully');
         
     }
 

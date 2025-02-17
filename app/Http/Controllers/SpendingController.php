@@ -65,9 +65,12 @@ class SpendingController extends Controller
     public function edit(Spending $spending)
     {
         $formInputs = Spending::getFormInputs();
-        return view('', [
-            'title' => 'Edit spending', 'formInputs' => $formInputs,
-            'action' => route('spendings.update', $spending->id), 'method' => 'PUT'
+        return view('spending.edit', [
+            'title' => 'Edit spending', 
+            'formInputs' => $formInputs,
+            'action' => route('spendings.update', $spending), 
+            'method' => 'PUT',
+            'model' => $spending
         ]);
     }
 
@@ -82,8 +85,11 @@ class SpendingController extends Controller
             'date' => 'required|date',
             'amount' => 'required|numeric|min:0.01'
         ]);
-        $income = $spending->update($validatedData, $spending->id);
-        return redirect()->route('spendings.index')->with('success','Spending updated successfully');
+
+
+        $spending = $spending->update($validatedData, ['id' => $spending->id]);
+    
+        return redirect()->route('spendings.index')->with('alertType','success')->with('message','Spending updated successfully');
     }
 
     /**

@@ -11,11 +11,12 @@ class Form extends Component
     /**
      * Create a new component instance.
      */
-    public function __construct (public string $action, public string $method, public array $formInputs)
+    public function __construct (public string $action, public string $method, public array $formInputs, public $model = null)
     {
         $this->formInputs = $formInputs;
         $this->method = $method;
         $this->action = $action;
+        $this->model = $model;
     }
 
     /**
