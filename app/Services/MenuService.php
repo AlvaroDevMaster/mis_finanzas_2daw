@@ -17,6 +17,11 @@ class MenuService
                 "url" => "/spendings",
                 'name' => "spendings",
             ],
+            [
+                "title" => "Categories",
+                "url" => "/categories",
+                'name' => "categories",
+            ],
         ];
     }
     public function isActive($route): bool

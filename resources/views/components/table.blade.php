@@ -7,9 +7,11 @@
                         {{$heading}}
                     </th>
                 @endforeach
+                @if($attributes->get('actionRoute'))
                 <th scope="col" class="px-6 py-3">
                     Acciones
                 </th>
+                @endif
             </tr>
         </thead>
         <tbody>
@@ -26,6 +28,8 @@
                             <td class="px-6 py-4 text-gray-900 dark:text-gray-300 whitespace-nowrap">
                                 @if($field === 'category_id')
                                     {{$data->category->name}}
+                                @elseif($field === 'show')
+                                    <a class="px-4 py-2 text-white bg-indigo-600 rounded-md shadow-md hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-400 transition" href="{{$data->show}}">Show</a>
                                 @else
                                     {{$data->$field}}
                                 @endif
@@ -41,7 +45,7 @@
                             </a>
 
                             <!-- Delete Form -->
-                            <form action="{{$attributes->get('actionRoute') . '/' . $data->id}}" method="POST">
+                            <form action="{{$attributes->get('actionRoute') . '/' . $data->id }}" method="POST">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit"
@@ -56,7 +60,9 @@
         </tbody>
     </table>
     {{-- Pagination --}}
+    @if(!is_array($tableData['data']))
     <div class="p-2 bg-gray-50 dark:bg-gray-900 rounded-b-lg">
         {{$tableData['data']->links()}}
     </div>
+    @endif
 </div>

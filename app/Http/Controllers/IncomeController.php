@@ -36,8 +36,6 @@ class IncomeController extends Controller
             ->with('category')
         
             ->paginate(10);
-        
-        
         return view('income.index', [
         
             'title' => 'My incomes',
@@ -94,6 +92,7 @@ class IncomeController extends Controller
         $income = Income::select('description', 'amount', 'category_id', 'date')
             ->with('category')
             ->find($id);
+
 
         return view('income.edit', [
             'title' => 'Edit income', 

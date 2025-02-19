@@ -19,14 +19,14 @@
     @endif
 </head>
 
-<body class="h-full text-gray-900 bg-gray-100 dark:text-gray-100 dark:bg-gray-900">
+<body class="h-full text-gray-900 dark:text-gray-100 bg-gray-100 dark:bg-gray-900">
 
     <div class="min-h-full">
         <x-menu />
 
         <!-- Header -->
-        <header class="bg-white shadow dark:bg-gray-800">
-            <div class="px-4 py-6 mx-auto max-w-7xl sm:px-6 lg:px-8">
+        <header class="bg-white dark:bg-gray-800 shadow">
+            <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
                 <h1 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
                     {{$title}}
                 </h1>
@@ -45,7 +45,7 @@
                 {{$message .= $errorsList}}
                 <x-alert :type="'error'" :message="$message" />
             @endif
-            <div class="px-4 py-6 mx-auto max-w-7xl sm:px-6 lg:px-8">
+            <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
                 {{$slot}}
             </div>
         </main>
